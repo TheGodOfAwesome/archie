@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  name          String?
+  createdAt     DateTime       @default(now())
+  sessions      Session[]
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                String   @id @default(uuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  planId            String
+  status            String   // active, pending, canceled, expired
+  payramPaymentId   String?  // the last payment initiated
+  currentPeriodEnd  DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  email     String?
+  createdAt DateTime @default(now())
+  messages  Message[]
+  blueprint Blueprint?
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id])
+  role      String   // "user", "assistant", "system"
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Blueprint {
+  id        String   @id @default(uuid())
+  sessionId String   @unique
+  session   Session  @relation(fields: [sessionId], references: [id])
+  diagram   String?
+  mockupUrl String?
+  files     Json?
+  mcpConfig Json?
+  createdAt DateTime @default(now())
+}

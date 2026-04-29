@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #000000;
+  --color-foreground: oklch(0.984 0.003 247.858);
+
+  --color-card: #000000;
+  --color-card-foreground: oklch(0.984 0.003 247.858);
+
+  --color-popover: #000000;
+  --color-popover-foreground: oklch(0.984 0.003 247.858);
+
+  --color-primary: oklch(0.707 0.165 254.624);
+  --color-primary-foreground: oklch(0.984 0.003 247.858);
+
+  --color-secondary: oklch(0.208 0.042 265.755);
+  --color-secondary-foreground: oklch(0.984 0.003 247.858);
+
+  --color-muted: oklch(0.208 0.042 265.755);
+  --color-muted-foreground: oklch(0.706 0.021 262.956);
+
+  --color-accent: oklch(0.6 0.165 254.624);
+  --color-accent-foreground: oklch(0.984 0.003 247.858);
+
+  --color-destructive: oklch(0.396 0.141 25.723);
+  --color-destructive-foreground: oklch(0.984 0.003 247.858);
+
+  --color-border: oklch(0.208 0.042 265.755);
+  --color-input: oklch(0.208 0.042 265.755);
+  --color-ring: oklch(0.871 0.012 258.337);
+
+  --radius-lg: 0.75rem;
+  --radius-md: calc(0.75rem - 2px);
+  --radius-sm: calc(0.75rem - 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+  }
+}
+
+.glass {
+  background: rgba(20, 20, 22, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card {
+  background: linear-gradient(145deg, rgba(30, 30, 35, 0.6), rgba(20, 20, 22, 0.8));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.neon-glow {
+  box-shadow: 0 0 15px 2px rgba(138, 43, 226, 0.4), 0 0 5px 1px rgba(138, 43, 226, 0.1);
+}
+
+.dot-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0.02));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
