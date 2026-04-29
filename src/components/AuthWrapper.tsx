@@ -5,7 +5,8 @@ import { Loader2 } from "lucide-react";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 
 export default function AuthWrapper({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, sdkHasLoaded } = useDynamicContext();
+  const { user, sdkHasLoaded } = useDynamicContext();
+  const isAuthenticated = !!user;
 
   if (!sdkHasLoaded) {
     return (

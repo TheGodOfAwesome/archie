@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import DynamicProvider from "@/components/DynamicProvider";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
@@ -29,9 +30,11 @@ export default function RootLayout({
       className={`${inter.variable} ${outfit.variable} dark antialiased h-full`}
     >
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground">
-        <DynamicProvider>
-          {children}
-        </DynamicProvider>
+        <Suspense>
+          <DynamicProvider>
+            {children}
+          </DynamicProvider>
+        </Suspense>
       </body>
     </html>
   );
