@@ -25,7 +25,7 @@ export default function CanvasPane({ context }: { context: AppContextType }) {
     if (!primaryWallet) return alert("Please connect wallet first");
     setEnsDeploying(true);
     try {
-      const provider: any = await primaryWallet.connector.getProvider();
+      const provider: any = await (primaryWallet.connector as any).getProvider();
       const hash = hashAgentBlueprint(context.diagramData || "", context.files || []);
       const txData = buildENSSetTextTx("orchestrator.archie.eth", "blueprint_hash", hash);
       
@@ -49,7 +49,7 @@ export default function CanvasPane({ context }: { context: AppContextType }) {
     if (!primaryWallet) return alert("Please connect wallet first");
     setUniDeploying(true);
     try {
-      const provider: any = await primaryWallet.connector.getProvider();
+      const provider: any = await (primaryWallet.connector as any).getProvider();
       const amountInWei = 1000000000000000n; // 0.001 ETH
       const tokenIn = "0x4200000000000000000000000000000000000006"; // WETH on Base
       const tokenOut = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"; // USDC on Base
