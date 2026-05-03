@@ -35,6 +35,11 @@ export default function DynamicProvider({
         overrides: {
           evmNetworks: (networks) => [arcL1Network, ...networks],
         },
+        events: {
+          onAuthSuccess: () => {
+            window.location.href = "/dashboard";
+          },
+        },
       }}
     >
       {children}

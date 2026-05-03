@@ -1,18 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { Bot, CreditCard, LayoutDashboard, Settings, User } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Bot, CreditCard, LayoutDashboard, Settings, User, LogOut } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { useEffect } from "react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, sdkHasLoaded, handleLogOut } = useDynamicContext();
+  const isAuthenticated = !!user;
+
+  useEffect(() => {
+    if (sdkHasLoaded && !isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, sdkHasLoaded, router]);
 
   const links = [
     { href: "/dashboard", label: "Overview", icon: <LayoutDashboard size={18} /> },
-    { href: "/architect", label: "Agent Config", icon: <Bot size={18} /> },
+    { href: "/dashboard/architect", label: "Agent Architect", icon: <Bot size={18} /> },
     { href: "/dashboard/billing", label: "Subscription", icon: <CreditCard size={18} /> },
     { href: "/dashboard/settings", label: "Settings", icon: <Settings size={18} /> },
   ];
+
+  if (!sdkHasLoaded || !isAuthenticated) {
+    return (
+      <div className="h-screen w-full bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-black text-neutral-200">
@@ -35,6 +54,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </Link>
             )
           })}
+          <button 
+            onClick={() => handleLogOut()}
+            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm text-red-400 hover:text-red-300 hover:bg-red-400/5 w-full mt-4"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
         </nav>
       </aside>
 

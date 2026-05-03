@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import {
   ArrowRight, Shield, Zap, Lock, Code, Layout, Blocks,
   Terminal, Activity, CheckCircle2, Layers, Coins, Globe,
@@ -7,9 +11,20 @@ import {
 } from "lucide-react";
 import { AnimatedSection, AnimatedItem } from "@/components/landing/AnimatedSection";
 
-export const unstable_instant = false;
-
 export default function LandingPage() {
+  const router = useRouter();
+  const { user, setShowAuthFlow } = useDynamicContext();
+  const isAuthenticated = !!user;
+
+  const handleStart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isAuthenticated) {
+      router.push("/dashboard");
+    } else {
+      setShowAuthFlow(true);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-neutral-200 selection:bg-primary/30 selection:text-white font-sans overflow-x-hidden">
       <div className="fixed inset-0 dot-pattern pointer-events-none opacity-[0.15] z-0"></div>
@@ -30,8 +45,12 @@ export default function LandingPage() {
             <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Link href="/architect" className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">Sign In</Link>
-            <Link href="/architect" className="text-sm font-medium bg-white text-black px-4 py-2 rounded-lg hover:bg-neutral-200 transition-colors">Get Started</Link>
+            <button onClick={handleStart} className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">
+              {isAuthenticated ? "Dashboard" : "Sign In"}
+            </button>
+            <button onClick={handleStart} className="text-sm font-medium bg-white text-black px-4 py-2 rounded-lg hover:bg-neutral-200 transition-colors">
+              Get Started
+            </button>
           </div>
         </div>
       </header>
@@ -55,9 +74,9 @@ export default function LandingPage() {
 
           <AnimatedSection delay={0.2}>
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
-              <Link href="/architect" className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 flex items-center justify-center gap-2 transition-all neon-glow">
+              <button onClick={handleStart} className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 flex items-center justify-center gap-2 transition-all neon-glow">
                 Design With an Agent <ArrowRight size={18} />
-              </Link>
+              </button>
               <a href="https://calendly.com/kuzi-synctropic/30min" target="_blank" rel="noreferrer" className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 text-white rounded-xl font-medium hover:bg-white/10 flex items-center justify-center transition-all">
                 Book a Design Meeting
               </a>
@@ -245,9 +264,9 @@ export default function LandingPage() {
                   {plan.sub && <span className="text-neutral-400">{plan.sub}</span>}
                 </div>
 
-                <Link href="/architect" className={`w-full py-3 rounded-xl flex items-center justify-center font-medium transition-colors mb-8 ${plan.id === 'pro' ? 'bg-primary text-white hover:bg-primary/90' : 'bg-white/10 text-white hover:bg-white/20'}`}>
+                <button onClick={handleStart} className={`w-full py-3 rounded-xl flex items-center justify-center font-medium transition-colors mb-8 ${plan.id === 'pro' ? 'bg-primary text-white hover:bg-primary/90' : 'bg-white/10 text-white hover:bg-white/20'}`}>
                   {plan.id === 'free' ? 'Start Free' : 'Upgrade Plan'}
-                </Link>
+                </button>
 
                 <div className="space-y-4 text-sm font-medium">
                   {['AI Workflow Inspiration', 'Workflow Design Tools', 'OpenClaw Starter Kit'].map((f, j) => (
@@ -342,9 +361,9 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">Ready to Build Your Workflow?</h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
-            <Link href="/architect" className="w-full sm:w-auto px-8 py-4 bg-white text-black rounded-xl font-medium hover:bg-neutral-200 transition-colors">
+            <button onClick={handleStart} className="w-full sm:w-auto px-8 py-4 bg-white text-black rounded-xl font-medium hover:bg-neutral-200 transition-colors">
               Design With an Agent
-            </Link>
+            </button>
             <a href="https://calendly.com/kuzi-synctropic/30min" target="_blank" rel="noreferrer" className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 text-white rounded-xl font-medium hover:bg-white/10 transition-colors">
               Book a Design Meeting
             </a>
