@@ -2,6 +2,7 @@
 
 import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+import { useRouter } from "next/navigation";
 
 const arcL1Network = {
   blockExplorerUrls: ["https://testnet.arcscan.app"],
@@ -24,6 +25,8 @@ export default function DynamicProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+
   return (
     <DynamicContextProvider
       settings={{
@@ -37,9 +40,10 @@ export default function DynamicProvider({
         },
         events: {
           onAuthSuccess: () => {
-            window.location.href = "/dashboard";
+            router.push("/dashboard");
           },
         },
+        redirectUrl: "/dashboard",
       }}
     >
       {children}

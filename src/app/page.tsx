@@ -10,17 +10,18 @@ import {
   Workflow as WorkflowIcon, Cpu, Brain, Database, Server
 } from "lucide-react";
 import { AnimatedSection, AnimatedItem } from "@/components/landing/AnimatedSection";
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 
 export default function LandingPage() {
   const router = useRouter();
-  const { user, setShowAuthFlow } = useDynamicContext();
+  const { user, setShowAuthFlow, sdkHasLoaded } = useDynamicContext();
   const isAuthenticated = !!user;
 
   const handleStart = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isAuthenticated) {
       router.push("/dashboard");
-    } else {
+    } else if (sdkHasLoaded) {
       setShowAuthFlow(true);
     }
   };
@@ -45,11 +46,13 @@ export default function LandingPage() {
             <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <button onClick={handleStart} className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-              {isAuthenticated ? "Dashboard" : "Sign In"}
-            </button>
+            <DynamicWidget innerButtonComponent={
+              <button className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">
+                Sign In
+              </button>
+            } />
             <button onClick={handleStart} className="text-sm font-medium bg-white text-black px-4 py-2 rounded-lg hover:bg-neutral-200 transition-colors">
-              Get Started
+              {isAuthenticated ? "Dashboard" : "Get Started"}
             </button>
           </div>
         </div>
