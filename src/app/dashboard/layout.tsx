@@ -9,7 +9,7 @@ import { useEffect } from "react";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, sdkHasLoaded, handleLogOut } = useDynamicContext();
+  const { user, sdkHasLoaded, handleLogOut, setShowDynamicUserProfile } = useDynamicContext();
   const isAuthenticated = !!user;
 
   useEffect(() => {
@@ -39,9 +39,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside className="w-64 border-r border-white/10 bg-[#0A0A0C] flex flex-col items-center py-6">
         <div className="w-full px-6 mb-8 flex items-center justify-between">
           <span className="font-bold text-xl text-white tracking-widest">FLOW.</span>
-          <div className="w-8 h-8 rounded bg-primary/20 flex items-center justify-center">
+          <button 
+            onClick={() => setShowDynamicUserProfile(true)}
+            className="w-8 h-8 rounded bg-primary/20 flex items-center justify-center hover:bg-primary/30 transition-colors cursor-pointer"
+          >
             <User size={16} className="text-primary" />
-          </div>
+          </button>
         </div>
         
         <nav className="flex-1 w-full px-4 space-y-2">
